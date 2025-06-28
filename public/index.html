@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotelFinder - Multi-City Hotel Search</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <h1 class="logo">
+                    <i class="fas fa-hotel"></i>
+                    HotelFinder
+                </h1>
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link active">Search Hotels</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="hero">
+            <div class="container">
+                <h2 class="hero-title">Find Your Perfect Hotel</h2>
+                <p class="hero-subtitle">Search across multiple cities with real-time availability</p>
+            </div>
+        </div>
+
+        <section class="search-section">
+            <div class="container">
+                <div class="search-card">
+                    <form id="searchForm" class="search-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Destination
+                                </label>
+                                <input type="text" id="city" name="city" placeholder="Enter city name..." required>
+                                <div id="suggestions" class="suggestions"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="checkin">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Check-in
+                                </label>
+                                <input type="date" id="checkin" name="checkin" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="checkout">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Check-out
+                                </label>
+                                <input type="date" id="checkout" name="checkout" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="guests">
+                                    <i class="fas fa-users"></i>
+                                    Guests
+                                </label>
+                                <select id="guests" name="guests">
+                                    <option value="1">1 Guest</option>
+                                    <option value="2" selected>2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                    <option value="5">5+ Guests</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="search-btn">
+                                <i class="fas fa-search"></i>
+                                Search Hotels
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-section" class="results-section" style="display: none;">
+            <div class="container">
+                <div class="results-header">
+                    <h3 id="results-title">Search Results</h3>
+                    <div id="search-info" class="search-info"></div>
+                </div>
+                <div id="results-grid" class="results-grid"></div>
+            </div>
+        </section>
+
+        <section id="popular-destinations" class="popular-section">
+            <div class="container">
+                <h3 class="section-title">Popular Destinations</h3>
+                <div id="popular-grid" class="popular-grid">
+                    <div class="popular-item" data-city="Amsterdam">
+                        <i class="fas fa-city"></i>
+                        <span>Amsterdam</span>
+                    </div>
+                    <div class="popular-item" data-city="Paris">
+                        <i class="fas fa-landmark"></i>
+                        <span>Paris</span>
+                    </div>
+                    <div class="popular-item" data-city="London">
+                        <i class="fas fa-crown"></i>
+                        <span>London</span>
+                    </div>
+                    <div class="popular-item" data-city="Berlin">
+                        <i class="fas fa-building"></i>
+                        <span>Berlin</span>
+                    </div>
+                    <div class="popular-item" data-city="Barcelona">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <span>Barcelona</span>
+                    </div>
+                    <div class="popular-item" data-city="Rome">
+                        <i class="fas fa-church"></i>
+                        <span>Rome</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading overlay -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Searching hotels...</p>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Booking</h3>
+                <button class="modal-close" onclick="closeBookingModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="booking-details"></div>
+                <div class="booking-form">
+                    <div class="form-group">
+                        <label for="guest-name">Guest Name</label>
+                        <input type="text" id="guest-name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guest-email">Email</label>
+                        <input type="email" id="guest-email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmBooking()">Confirm Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 HotelFinder POC - Technical Demo for Booking.com Interview</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html> 

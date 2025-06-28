@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotelFinder Dashboard - Performance Monitoring</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <h1 class="logo">
+                    <i class="fas fa-hotel"></i>
+                    HotelFinder
+                </h1>
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link">Search Hotels</a>
+                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main dashboard-main">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Performance Monitoring Dashboard</h2>
+                <div class="dashboard-controls">
+                    <button id="refreshBtn" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh Data
+                    </button>
+                    <div class="auto-refresh">
+                        <label>
+                            <input type="checkbox" id="autoRefresh" checked>
+                            Auto-refresh (30s)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health Overview -->
+            <section class="metrics-overview">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3 id="totalSearches">0</h3>
+                        <p>Total Searches</p>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3 id="avgResponseTime">0ms</h3>
+                        <p>Avg Response Time</p>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3 id="cacheHitRate">0%</h3>
+                        <p>Cache Hit Rate</p>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3 id="totalBookings">0</h3>
+                        <p>Total Bookings</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section
+            <section class="charts-section">
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h3>Cache Performance</h3>
+                        <canvas id="cacheChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Popular Destinations</h3>
+                        <canvas id="destinationsChart"></canvas>
+                    </div>
+                </div>
+            </section> -->
+
+            <!-- System Health -->
+            <section class="system-health">
+                <h3>System Health</h3>
+                <div class="health-grid">
+                    <div class="health-item">
+                        <div class="health-status" id="dbStatus">
+                            <i class="fas fa-database"></i>
+                            <span>Database</span>
+                            <span class="status-indicator status-connected">Connected</span>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-status" id="redisStatus">
+                            <i class="fas fa-server"></i>
+                            <span>Redis Cache</span>
+                            <span class="status-indicator" id="redisStatusIndicator">Checking...</span>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-status" id="apiStatus">
+                            <i class="fas fa-plug"></i>
+                            <span>API Service</span>
+                            <span class="status-indicator status-connected">Operational</span>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-status">
+                            <i class="fas fa-clock"></i>
+                            <span>Uptime</span>
+                            <span class="status-value" id="uptime">0s</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Real-time Metrics -->
+            <section class="realtime-metrics">
+                <h3>Real-time Metrics</h3>
+                <div class="metrics-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Current Value</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metricsTableBody">
+                            <tr>
+                                <td>API Requests</td>
+                                <td id="apiRequests">0</td>
+                                <td>Total API requests received</td>
+                            </tr>
+                            <tr>
+                                <td>Cache Hits</td>
+                                <td id="cacheHits">0</td>
+                                <td>Number of cache hits</td>
+                            </tr>
+                            <tr>
+                                <td>Cache Misses</td>
+                                <td id="cacheMisses">0</td>
+                                <td>Number of cache misses</td>
+                            </tr>
+                            <tr>
+                                <td>Bookings Created</td>
+                                <td id="bookingsCreated">0</td>
+                                <td>Total bookings processed</td>
+                            </tr>
+                            <tr>
+                                <td>Email Confirmations</td>
+                                <td id="emailConfirmations">0</td>
+                                <td>Booking confirmation emails sent</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Popular Cities -->
+            <section class="popular-cities-section">
+                <h3>Popular Search Destinations</h3>
+                <div id="popularCitiesList" class="popular-cities-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Load Testing -->
+            <section class="load-testing">
+                <h3>Load Testing Simulation</h3>
+                <div class="load-test-controls">
+                    <button id="simulateLoadBtn" class="btn btn-warning">
+                        <i class="fas fa-bolt"></i>
+                        Simulate High Load
+                    </button>
+                    <button id="reindexBtn" class="btn btn-info">
+                        <i class="fas fa-sync"></i>
+                        Trigger Reindex
+                    </button>
+                    <div class="load-test-info">
+                        <p>Simulate real-world scenarios to test system performance and resilience.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading overlay -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading dashboard data...</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 HotelFinder POC - Performance Monitoring Dashboard</p>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html> 
